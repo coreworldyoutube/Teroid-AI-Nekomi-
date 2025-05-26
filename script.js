@@ -33,6 +33,14 @@ function addMessage(text, sender) {
 }
 
 function toMachineSpeak(text) {
-  // ここで機械語風に変換（例: 大文字にしてビープボップを付加）
-  return `BEEP-BOOP: [${text.toUpperCase()}]`;
+  return fetch("http://localhost:5000/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: text })
+  })
+  .then(res => res.json())
+  .then(data => data.reply)
+  .catch(err => "エラーが発生しました");
 }
