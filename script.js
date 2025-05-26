@@ -1,19 +1,16 @@
-function sendMessage() {
+async function sendMessage() {
   const inputElem = document.getElementById('user-input');
   const chatBox = document.getElementById('chat-box');
   const userText = inputElem.value.trim();
   if (!userText) return;
 
-  // ユーザーメッセージをチャットボックスに追加（userクラスで色分け）
   addMessage(userText, 'user');
 
-  // 擬似AIの返答を生成
-  const botReply = toMachineSpeak(userText);
+  // fetchを待って結果を受け取る
+  const botReply = await toMachineSpeak(userText);
 
-  // ボットメッセージをチャットボックスに追加（botクラスで色分け）
   addMessage(botReply, 'bot');
 
-  // 入力欄をクリアしてスクロールを一番下へ
   inputElem.value = '';
   chatBox.scrollTop = chatBox.scrollHeight;
 }
