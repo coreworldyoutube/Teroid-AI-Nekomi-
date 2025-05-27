@@ -1,3 +1,9 @@
+const learningData = {
+  "こんにちは": ["やあ！", "こんにちは〜", "こんちゃ！"],
+  "元気": ["元気だよ！", "まあまあかな", "疲れた〜"],
+  "好きな食べ物": ["ラーメン！", "寿司！", "チョコ！"]
+};
+
 async function sendMessage() {
   const inputElem = document.getElementById('user-input');
   const chatBox = document.getElementById('chat-box');
@@ -6,9 +12,7 @@ async function sendMessage() {
 
   addMessage(userText, 'user');
 
-  // fetchを待って結果を受け取る
   const botReply = await toMachineSpeak(userText);
-
   addMessage(botReply, 'bot');
 
   inputElem.value = '';
@@ -30,14 +34,13 @@ function addMessage(text, sender) {
 }
 
 function toMachineSpeak(text) {
-  return fetch("http://localhost:5000/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: text })
-  })
-  .then(res => res.json())
-  .then(data => data.reply)
-  .catch(err => "エラーが発生しました");
+  const keys = Object.keys(learningData);
+  for (let key of keys) {
+    if (text.includes(key)) {
+      const responses = learningData[key];
+      const randIndex = Math.floor(Math.random() * responses.length);
+      return Promise.resolve(responses[randIndex]);
+    }
+  }
+  return Promise.resolve("うーん、よくわからないにゃ");
 }
