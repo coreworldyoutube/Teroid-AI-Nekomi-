@@ -2,7 +2,7 @@ let learningData = {}; // 空オブジェクトで初期化
 
 async function loadLearningData() {
   try {
-    const res = await fetch('learningData.json');  // JSONファイルを読み込み
+    const res = await fetch('data.json');  // JSONファイルを読み込み
     learningData = await res.json();                // 解析して代入
     console.log('学習データ読み込み完了', learningData);
   } catch (e) {
