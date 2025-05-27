@@ -1,8 +1,23 @@
-const learningData = {
-  "こんにちは": ["やあ！", "こんにちは〜", "こんちゃ！"],
-  "元気": ["元気だよ！", "まあまあかな", "疲れた〜"],
-  "好きな食べ物": ["ラーメン！", "寿司！", "チョコ！"]
-};
+let learningData = {}; // 空オブジェクトで初期化
+
+async function loadLearningData() {
+  try {
+    const res = await fetch('learningData.json');  // JSONファイルを読み込み
+    learningData = await res.json();                // 解析して代入
+    console.log('学習データ読み込み完了', learningData);
+  } catch (e) {
+    console.error('学習データ読み込み失敗', e);
+    // 読み込み失敗時の保険的な最低限のデータ
+    learningData = {
+      "こんにちは": ["やあ！", "こんにちは〜", "こんちゃ！"]
+    };
+  }
+}
+
+// ページが読み込まれたら学習データをロードする
+window.addEventListener('load', () => {
+  loadLearningData();
+});
 
 async function sendMessage() {
   const inputElem = document.getElementById('user-input');
